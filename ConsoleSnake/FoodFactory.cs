@@ -22,7 +22,7 @@ namespace ConsoleSnake
 
         public void CreateFood()
         {
-            food = (random.Next(2, x - 2), random.Next(2, y -2), ch);
+            food = (random.Next(2, x - 2), random.Next(2, y - 2), ch);
             food.Draw();
         }
     }

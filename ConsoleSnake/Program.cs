@@ -5,6 +5,13 @@ using System.Drawing;
 
 namespace ConsoleSnake
 {
+  enum Direction
+    {
+        LEFT, 
+        RIGHT,
+        UP,
+        DOWN
+    }
     class Program
     {
         static readonly int x = 80; //buffer and window sizes
@@ -12,12 +19,13 @@ namespace ConsoleSnake
         static Walls walls;
         static void Main(string[] args)
         {
+            Console.ForegroundColor = ConsoleColor.Green;
             Console.SetWindowSize(x + 1, y + 1); 
             Console.SetBufferSize(x + 1, y + 1);
             Console.CursorVisible = false; // скрытие отображение курсора
 
             walls = new Walls(x, y, '#');
-            FoodFactory food = new FoodFactory(x, y, '%');
+            FoodFactory food = new FoodFactory(x, y, '@');
             food.CreateFood();
 
             /*возможно, стоит потом сделать метод для конфигурации консоли*/
@@ -33,7 +41,7 @@ namespace ConsoleSnake
         public int y { get; set; }
         public char ch { get; set; }
 
-        public static implicit operator Point((int, int, char) value) =>  //TODO разобрать что делают эти две строчки
+        public static implicit operator Point((int, int, char) value) => 
         new Point { x = value.Item1, y = value.Item2, ch = value.Item3 };
 
         

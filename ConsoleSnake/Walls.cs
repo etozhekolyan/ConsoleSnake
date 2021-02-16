@@ -10,7 +10,7 @@ namespace ConsoleSnake
         private char ch;
         private List<Point> wall = new List<Point>();
 
-        public Walls(int x, int y, char ch) // TODO why thise methods calling twise ? 
+        public Walls(int x, int y, char ch)  
         {
             this.ch = ch;
             DrawHorizontal(x, 0);
@@ -23,7 +23,7 @@ namespace ConsoleSnake
         {
             for (int i = 0; i < x; i++)
             {
-                Point p = (i, y, ch);//TODO это связано с Теми двумя строчками из структуры
+                Point p = (i, y, ch);
                 p.Draw();
                 wall.Add(p);
             }
