@@ -17,6 +17,7 @@ namespace ConsoleSnake
         static readonly int x = 80; //buffer and window sizes
         static readonly int y = 26;
         static Walls walls;
+        static Snake snake;
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -27,6 +28,8 @@ namespace ConsoleSnake
             walls = new Walls(x, y, '#');
             FoodFactory food = new FoodFactory(x, y, '@');
             food.CreateFood();
+
+            snake = new Snake(x / 2, y / 2, 3);
 
             /*возможно, стоит потом сделать метод для конфигурации консоли*/
             Console.ReadLine(); //без этой срани консоль постоянно выводит путь к файлу и все портит
