@@ -39,5 +39,17 @@ namespace ConsoleSnake
             }
         }
 
+        public bool IsHit (Point p)
+        {
+            foreach (var w in wall)
+            {
+                if (p == w)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Drawing;
+using System.Timers;
+using System.Threading;
 
 namespace ConsoleSnake
 {
@@ -18,6 +20,8 @@ namespace ConsoleSnake
         static readonly int y = 26;
         static Walls walls;
         static Snake snake;
+        static FoodFactory foodFactory;
+        static System.Threading.Timer time;
         static void Main(string[] args)
         {
             Console.ForegroundColor = ConsoleColor.Green;
@@ -26,15 +30,40 @@ namespace ConsoleSnake
             Console.CursorVisible = false; // скрытие отображение курсора
 
             walls = new Walls(x, y, '#');
-            FoodFactory food = new FoodFactory(x, y, '@');
-            food.CreateFood();
-
             snake = new Snake(x / 2, y / 2, 3);
+            foodFactory = new FoodFactory(x, y, '@');
+            foodFactory.CreateFood();
+            time = new System.Threading.Timer(Loop, null, 0, 200);
+
+            while (true)
+            {
+                if (Console.KeyAvailable) // нажата ли клавиша 
+                {
+                    ConsoleKeyInfo key = Console.ReadKey(); // возвращает нажатые клавиши
+                    snake.Rotation(key.Key);
+                }
+            }
 
             /*возможно, стоит потом сделать метод для конфигурации консоли*/
             Console.ReadLine(); //без этой срани консоль постоянно выводит путь к файлу и все портит
         }
+        static void Loop(object obj)
+        {
+            if (walls.IsHit(snake.GetHead()) || snake.IsHit(snake.GetHead()))
+            {
+                time.Change(0, Timeout.Infinite);
+            }
+            else if (snake.Eat(foodFactory.food))
+            {
+                foodFactory.CreateFood();
+            }
+            else
+            {
+                snake.Move();
+            }
+        }
     }
+
 
     struct Point
     {
@@ -47,7 +76,10 @@ namespace ConsoleSnake
         public static implicit operator Point((int, int, char) value) => 
         new Point { x = value.Item1, y = value.Item2, ch = value.Item3 };
 
-        
+        public static bool operator == (Point a, Point b) =>
+            (a.x == b.x && a.y == b.y) ? true : false;
+        public static bool operator !=(Point a, Point b) =>
+            (a.x != b.x && a.y != b.y) ? true : false;
 
         public void Draw() //вывод символа
         {

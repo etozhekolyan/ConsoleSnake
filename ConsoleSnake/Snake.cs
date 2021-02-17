@@ -62,7 +62,32 @@ namespace ConsoleSnake
             return p;
         }
 
-        public void Rotation(ConsoleKey key)
+        public bool IsHit (Point p)
+        {
+            for (int i = snake.Count - 2; i > 0; i--)
+            {
+                if (snake[i] == p)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public bool Eat (Point p)
+        {
+            head = GetNextPoint();
+            if (head == p)
+            {
+                snake.Add(head);
+                head.Draw();
+                return true;
+            }
+            return false;
+        }
+
+
+            public void Rotation(ConsoleKey key)
         {
             if (rotate)
             {
