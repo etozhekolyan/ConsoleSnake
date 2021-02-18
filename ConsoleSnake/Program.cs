@@ -18,17 +18,14 @@ namespace ConsoleSnake
     {
         static readonly int x = 80; //buffer and window sizes
         static readonly int y = 26;
+        static int score = 0;
         static Walls walls;
         static Snake snake;
         static FoodFactory foodFactory;
         static System.Threading.Timer time;
         static void Main(string[] args)
-        {
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.SetWindowSize(x + 1, y + 1); 
-            Console.SetBufferSize(x + 1, y + 1);
-            Console.CursorVisible = false; // скрытие отображение курсора
-
+        { 
+            ConsoleConfig();
             walls = new Walls(x, y, '#');
             snake = new Snake(x / 2, y / 2, 3);
             foodFactory = new FoodFactory(x, y, '@');
@@ -43,19 +40,35 @@ namespace ConsoleSnake
                     snake.Rotation(key.Key);
                 }
             }
+        }
 
-            /*возможно, стоит потом сделать метод для конфигурации консоли*/
-            Console.ReadLine(); //без этой срани консоль постоянно выводит путь к файлу и все портит
+        static void ConsoleConfig() // Console configuration on start app 
+        {
+            Console.Title = "Snake console";
+            Console.SetWindowPosition(0, 0);
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.SetWindowSize(x + 1, y + 1);
+            Console.SetBufferSize(x + 1, y + 1);
+            Console.CursorVisible = false; // скрытие отображение курсора
+        }
+        static void GameOver()
+        {
+            Console.Clear();
+            //Console.SetCursorPosition(50, 50);
+            Console.Write("Score: " + score);
         }
         static void Loop(object obj)
         {
             if (walls.IsHit(snake.GetHead()) || snake.IsHit(snake.GetHead()))
             {
                 time.Change(0, Timeout.Infinite);
+                //GameOver();
             }
             else if (snake.Eat(foodFactory.food))
             {
                 foodFactory.CreateFood();
+                score++;
             }
             else
             {
@@ -67,8 +80,6 @@ namespace ConsoleSnake
 
     struct Point
     {
-        /*эта структура выводит на консоль "графику". Другими словами это тип данных - точка, которая сожержит координаты и символы которые будут выводиться
-         * на консоль*/
         public int x { get; set; }
         public int y { get; set; }
         public char ch { get; set; }

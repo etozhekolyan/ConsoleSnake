@@ -87,7 +87,7 @@ namespace ConsoleSnake
         }
 
 
-            public void Rotation(ConsoleKey key)
+        public void Rotation(ConsoleKey key)
         {
             if (rotate)
             {
